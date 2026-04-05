@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Features - Virtual Trial Room</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="static/images/icons/Try-Buy.png">
+	
+	<!-- Core Styles -->
+	<link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/util.css">
+	
+	<!-- Modern Design CSS -->
+	<link rel="stylesheet" type="text/css" href="static/css/modern-design.css">
+
+	<style>
+		.features-hero {
+			background: linear-gradient(135deg, #6366f1, #3b82f6);
+			color: white;
+			padding: 4rem 0;
+			margin-top: 84px;
+			text-align: center;
+		}
+
+		.features-hero h1 {
+			font-size: 2.5rem;
+			font-weight: 800;
+			margin-bottom: 1rem;
+		}
+
+		.feature-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 2rem;
+			margin: 3rem 0;
+		}
+
+		.feature-large {
+			background: linear-gradient(135deg, #6366f1, #3b82f6);
+			color: white;
+			padding: 3rem;
+			border-radius: 1.5rem;
+			display: flex;
+			align-items: center;
+			gap: 2rem;
+			margin-bottom: 2rem;
+		}
+
+		.feature-large:nth-child(even) {
+			background: linear-gradient(135deg, #ec4899, #f472b6);
+		}
+
+		.feature-large:nth-child(3n) {
+			background: linear-gradient(135deg, #f59e0b, #fbbf24);
+		}
+
+		.feature-large-icon {
+			font-size: 3rem;
+			width: 100px;
+			height: 100px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: rgba(255, 255, 255, 0.2);
+			border-radius: 1rem;
+			flex-shrink: 0;
+		}
+
+		.feature-large-content h3 {
+			font-size: 1.5rem;
+			font-weight: 800;
+			margin-bottom: 0.5rem;
+		}
+
+		.feature-large-content p {
+			font-size: 0.95rem;
+			opacity: 0.95;
+			line-height: 1.6;
+		}
+
+		.timeline {
+			position: relative;
+			padding: 2rem 0;
+		}
+
+		.timeline-item {
+			background: white;
+			border-radius: 1rem;
+			padding: 1.5rem;
+			border-left: 4px solid;
+			border-left-color: var(--primary);
+			margin-bottom: 1.5rem;
+			box-shadow: var(--shadow-md);
+			transition: var(--transition);
+		}
+
+		.timeline-item:hover {
+			box-shadow: var(--shadow-lg);
+			transform: translateX(10px);
+		}
+
+		.timeline-item:nth-child(2) {
+			border-left-color: var(--secondary);
+		}
+
+		.timeline-item:nth-child(3) {
+			border-left-color: var(--accent);
+		}
+
+		.timeline-item h4 {
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+			color: var(--dark);
+		}
+
+		.timeline-item p {
+			color: var(--gray-500);
+			font-size: 0.95rem;
+		}
+
+		.comparison-table {
+			background: white;
+			border-radius: 1rem;
+			overflow: hidden;
+			box-shadow: var(--shadow-lg);
+			margin: 2rem 0;
+		}
+
+		.comparison-table table {
+			width: 100%;
+			margin: 0;
+		}
+
+		.comparison-table th {
+			background: linear-gradient(135deg, #6366f1, #3b82f6);
+			color: white;
+			padding: 1.25rem;
+			text-align: left;
+			font-weight: 700;
+		}
+
+		.comparison-table td {
+			padding: 1rem 1.25rem;
+			border-bottom: 1px solid var(--gray-200);
+		}
+
+		.comparison-table tr:last-child td {
+			border-bottom: none;
+		}
+
+		.check-icon {
+			color: var(--success);
+			font-weight: 700;
+		}
+
+		.cross-icon {
+			color: var(--danger);
+			font-weight: 700;
+		}
+
+		.cta-section {
+			background: linear-gradient(135deg, #6366f1, #3b82f6);
+			color: white;
+			padding: 4rem;
+			border-radius: 1.5rem;
+			text-align: center;
+			margin: 3rem 0;
+		}
+
+		@media (max-width: 768px) {
+			.features-hero h1 {
+				font-size: 1.75rem;
+			}
+
+			.feature-large {
+				flex-direction: column;
+				text-align: center;
+			}
+
+			.feature-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.comparison-table {
+				overflow-x: auto;
+			}
+		}
+	</style>
+</head>
+<body class="animsition">
+
+	<!-- Modern Header -->
+	<header>
+		<div class="container-menu-desktop">
+			<div class="wrap-menu-desktop">
+				<nav class="limiter-menu-desktop container">
+					<a href="http://127.0.0.1:5000/index" class="logo">
+						<img src="static/images/icons/Try-Buy.png" alt="Virtual Trial Room">
+					</a>
+
+					<div class="menu-desktop">
+						<ul class="main-menu">
+							<li>
+								<a href="http://127.0.0.1:5000/index">Home</a>
+							</li>
+							<li>
+								<a href="http://127.0.0.1:5000/product">Shop</a>
+							</li>
+							<li>
+								<a href="http://127.0.0.1:5000/features">Features</a>
+							</li>
+						</ul>
+					</div>	
+
+					<div class="wrap-icon-header flex-w flex-r-m m-r-15">
+						<a href="http://127.0.0.1:5000/checkout" class="btn-modern btn-primary">
+							<i class="fa fa-camera m-r-8"></i> Try Now
+						</a>
+					</div>
+				</nav>
+			</div>	
+		</div>
+
+		<div class="wrap-header-mobile">
+			<div class="logo-mobile">
+				<a href="http://127.0.0.1:5000/index"><img src="static/images/icons/Try-Buy.png" alt="Logo"></a>
+			</div>
+			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+				<span class="hamburger-box"><span class="hamburger-inner"></span></span>
+			</div>
+		</div>
+
+		<div class="menu-mobile">
+			<ul class="main-menu-m">
+				<li><a href="http://127.0.0.1:5000/index">Home</a></li>
+				<li><a href="http://127.0.0.1:5000/product">Shop</a></li>
+				<li><a href="http://127.0.0.1:5000/features">Features</a></li>
+			</ul>
+		</div>
+	</header>
+
+	<!-- Hero Section -->
+	<div class="features-hero">
+		<div class="container">
+			<h1>🚀 Cutting-Edge Features</h1>
+			<p style="font-size: 1.2rem; opacity: 0.9;">Discover what makes Virtual Trial Room the future of online shopping</p>
+		</div>
+	</div>
+
+	<!-- Main Features Section -->
+	<section class="container" style="margin: 4rem 0;">
+		<div class="section-title" style="margin-bottom: 3rem;">
+			<h2>Innovative Technology</h2>
+			<p>Experience shopping like never before</p>
+		</div>
+
+		<!-- Feature Large Cards -->
+		<div class="feature-large">
+			<div class="feature-large-icon">
+				<i class="fa fa-camera"></i>
+			</div>
+			<div class="feature-large-content">
+				<h3>Virtual Try-On</h3>
+				<p>Use your webcam to virtually try on clothing, accessories, and more. See exactly how items will look on you before purchasing.</p>
+			</div>
+		</div>
+
+		<div class="feature-large">
+			<div class="feature-large-icon">
+				<i class="fa fa-cube"></i>
+			</div>
+			<div class="feature-large-content">
+				<h3>3D Product Visualization</h3>
+				<p>Explore products in stunning 3D with multiple viewing angles, zoom levels, and realistic lighting conditions.</p>
+			</div>
+		</div>
+
+		<div class="feature-large">
+			<div class="feature-large-icon">
+				<i class="fa fa-brain"></i>
+			</div>
+			<div class="feature-large-content">
+				<h3>AI-Powered Recommendations</h3>
+				<p>Our intelligent algorithm learns your style preferences and recommends products perfectly suited to you.</p>
+			</div>
+		</div>
+
+		<div class="feature-large">
+			<div class="feature-large-icon">
+				<i class="fa fa-magic"></i>
+			</div>
+			<div class="feature-large-content">
+				<h3>Real-Time Pose Detection</h3>
+				<p>Advanced computer vision technology accurately maps products onto your body in real-time.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Secondary Features Grid -->
+	<section class="container" style="margin: 4rem 0;">
+		<div class="section-title" style="margin-bottom: 3rem;">
+			<h2>Additional Features</h2>
+			<p>Everything you need for the best shopping experience</p>
+		</div>
+
+		<div class="feature-grid">
+			<div class="feature-card">
+				<div class="feature-icon">
+					<i class="fa fa-mobile"></i>
+				</div>
+				<h3>Mobile Optimized</h3>
+				<p>Seamless experience on all devices - smartphone, tablet, or desktop. Shop on the go, anytime, anywhere.</p>
+			</div>
+
+			<div class="feature-card">
+				<div class="feature-icon">
+					<i class="fa fa-shield"></i>
+				</div>
+				<h3>Secure Payment</h3>
+				<p>Industry-leading encryption and security protocols protect your personal and payment information.</p>
+			</div>
+
+			<div class="feature-card">
+				<div class="feature-icon">
+					<i class="fa fa-undo"></i>
+				</div>
+				<h3>Easy Returns</h3>
+				<p>30-day hassle-free returns. If you're not satisfied, return items easily with our simple process.</p>
+			</div>
+
+			<div class="feature-card">
+				<div class="feature-icon">
+					<i class="fa fa-truck"></i>
+				</div>
+				<h3>Fast Shipping</h3>
+				<p>Express delivery options available. Track your package in real-time from warehouse to doorstep.</p>
+			</div>
+
+			<div class="feature-card">
+				<div class="feature-icon">
+					<i class="fa fa-users"></i>
+				</div>
+				<h3>Community Feedback</h3>
+				<p>Read reviews from real customers. Share your experience and help others make informed decisions.</p>
+			</div>
+
+			<div class="feature-card">
+				<div class="feature-icon">
+					<i class="fa fa-gift"></i>
+				</div>
+				<h3>Loyalty Rewards</h3>
+				<p>Earn points on every purchase and redeem them for exclusive discounts and special offers.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Roadmap Section -->
+	<section class="container" style="margin: 4rem 0;">
+		<div class="section-title" style="margin-bottom: 3rem;">
+			<h2>Coming Soon</h2>
+			<p>Exciting features in development</p>
+		</div>
+
+		<div class="timeline">
+			<div class="timeline-item">
+				<h4>🔜 Q1 2024: Social Shopping</h4>
+				<p>Shop with friends in real-time, share wishlists, and get recommendations from your social circle.</p>
+			</div>
+
+			<div class="timeline-item">
+				<h4>🔜 Q2 2024: AR Mirror</h4>
+				<p>Advanced augmented reality mirror for even more realistic try-on experiences with realistic lighting.</p>
+			</div>
+
+			<div class="timeline-item">
+				<h4>🔜 Q3 2024: Personal Stylist AI</h4>
+				<p>AI stylist that creates personalized outfits based on your preferences, body type, and occasions.</p>
+			</div>
+
+			<div class="timeline-item">
+				<h4>🔜 Q4 2024: Virtual Fashion Shows</h4>
+				<p>Attend exclusive virtual fashion shows and get early access to limited edition collections.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Comparison Table -->
+	<section class="container" style="margin: 4rem 0;">
+		<div class="section-title" style="margin-bottom: 2rem;">
+			<h2>Why We're Different</h2>
+		</div>
+
+		<div class="comparison-table">
+			<table>
+				<thead>
+					<tr>
+						<th>Feature</th>
+						<th>Virtual Trial Room</th>
+						<th>Traditional Shopping</th>
+						<th>Competitors</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Virtual Try-On</strong></td>
+						<td><span class="check-icon">✓ Advanced AI</span></td>
+						<td><span class="cross-icon">✗</span></td>
+						<td><span class="check-icon">✓ Basic</span></td>
+					</tr>
+					<tr>
+						<td><strong>Real-Time Pose Detection</strong></td>
+						<td><span class="check-icon">✓ Yes</span></td>
+						<td><span class="cross-icon">✗</span></td>
+						<td><span class="cross-icon">✗</span></td>
+					</tr>
+					<tr>
+						<td><strong>3D Visualization</strong></td>
+						<td><span class="check-icon">✓ Full 360°</span></td>
+						<td><span class="cross-icon">✗</span></td>
+						<td><span class="check-icon">✓ Limited</span></td>
+					</tr>
+					<tr>
+						<td><strong>Mobile App</strong></td>
+						<td><span class="check-icon">✓ iOS & Android</span></td>
+						<td><span class="cross-icon">✗</span></td>
+						<td><span class="check-icon">✓ Yes</span></td>
+					</tr>
+					<tr>
+						<td><strong>AI Recommendations</strong></td>
+						<td><span class="check-icon">✓ Personal</span></td>
+						<td><span class="cross-icon">✗</span></td>
+						<td><span class="check-icon">✓ Generic</span></td>
+					</tr>
+					<tr>
+						<td><strong>24/7 Support</strong></td>
+						<td><span class="check-icon">✓ Chat & Phone</span></td>
+						<td><span class="check-icon">✓ Limited</span></td>
+						<td><span class="check-icon">✓ Chat Only</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<!-- CTA Section -->
+	<div class="cta-section container">
+		<h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Ready to Experience the Future?</h2>
+		<p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">Join thousands of satisfied customers already enjoying our virtual try-on experience.</p>
+		<a href="http://127.0.0.1:5000/checkout" class="btn-modern" style="background: white; color: #6366f1; font-weight: 700; font-size: 1rem;">
+			<i class="fa fa-rocket m-r-10"></i> Start Your Virtual Journey
+		</a>
+	</div>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+				<div>
+					<h3>About Us</h3>
+					<p>Virtual Trial Room revolutionizes online shopping with cutting-edge AR and AI technology.</p>
+				</div>
+				<div>
+					<h3>Quick Links</h3>
+					<ul>
+						<li><a href="http://127.0.0.1:5000/index">Home</a></li>
+						<li><a href="http://127.0.0.1:5000/product">Shop</a></li>
+						<li><a href="http://127.0.0.1:5000/features">Features</a></li>
+					</ul>
+				</div>
+				<div>
+					<h3>Support</h3>
+					<ul>
+						<li><a href="#">Contact Us</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+						<li><a href="#">Terms & Conditions</a></li>
+					</ul>
+				</div>
+				<div>
+					<h3>Follow Us</h3>
+					<ul>
+						<li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+						<li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+						<li><a href="#"><i class="fa fa-instagram"></i> Instagram</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; 2024 Virtual Trial Room. All rights reserved. | Made with ❤️ for fashion lovers</p>
+			</div>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="static/vendor/bootstrap/js/popper.js"></script>
+	<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

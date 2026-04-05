@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Showcase - Virtual Trial Room</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #1e293b;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .section-title i {
+            color: #6366f1;
+            font-size: 32px;
+        }
+
+        /* Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .color-box {
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .color-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-box h3 {
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .color-box p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Primary Colors */
+        .color-indigo {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+
+        .color-pink {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+        }
+
+        .color-amber {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        /* Accent Colors */
+        .color-green {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .color-red {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .color-cyan {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            color: white;
+        }
+
+        .color-navy {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+        }
+
+        /* Gradients Showcase */
+        .gradients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .gradient-card {
+            height: 150px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gradient-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .gradient-card h4 {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .gradient-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+        }
+
+        .gradient-warm {
+            background: linear-gradient(135deg, #f59e0b 0%, #dc2626 100%);
+        }
+
+        .gradient-cool {
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+        }
+
+        .gradient-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .gradient-dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        /* Buttons Showcase */
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .button-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .button-showcase p {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+            border: 2px solid #6366f1;
+        }
+
+        .btn-secondary:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #6366f1;
+            border: 2px solid #6366f1;
+        }
+
+        .btn-outline:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        /* Cards Showcase */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Shadows Showcase */
+        .shadows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .shadow-box {
+            width: 100%;
+            height: 150px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .shadow-md {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .shadow-xl {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .shadow-colorful {
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .shadow-warm {
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Animations */
+        .animation-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+
+        .animated-element {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .bounce {
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .slide {
+            animation: slide 2s ease-in-out infinite;
+        }
+
+        @keyframes slide {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
+            border-top: 3px solid rgba(99, 102, 241, 0.3);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .color-grid,
+            .gradients-grid,
+            .buttons-grid,
+            .cards-grid,
+            .shadows-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🎨 Virtual Trial Room Design System</h1>
+            <p>Comprehensive showcase of colors, components, and design patterns</p>
+        </header>
+
+        <!-- Color Palette Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-palette"></i>
+                Color Palette
+            </h2>
+            <div class="color-grid">
+                <div class="color-box color-indigo">
+                    <h3>Primary Indigo</h3>
+                    <p>#6366f1</p>
+                </div>
+                <div class="color-box color-pink">
+                    <h3>Secondary Pink</h3>
+                    <p>#ec4899</p>
+                </div>
+                <div class="color-box color-amber">
+                    <h3>Accent Amber</h3>
+                    <p>#f59e0b</p>
+                </div>
+                <div class="color-box color-green">
+                    <h3>Success Green</h3>
+                    <p>#10b981</p>
+                </div>
+                <div class="color-box color-red">
+                    <h3>Danger Red</h3>
+                    <p>#ef4444</p>
+                </div>
+                <div class="color-box color-cyan">
+                    <h3>Info Cyan</h3>
+                    <p>#0891b2</p>
+                </div>
+                <div class="color-box color-navy">
+                    <h3>Dark Navy</h3>
+                    <p>#0f172a</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gradients Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-rainbow"></i>
+                Gradient Combinations
+            </h2>
+            <div class="gradients-grid">
+                <div class="gradient-card gradient-primary">
+                    <h4>Primary Gradient</h4>
+                </div>
+                <div class="gradient-card gradient-warm">
+                    <h4>Warm Gradient</h4>
+                </div>
+                <div class="gradient-card gradient-cool">
+                    <h4>Cool Gradient</h4>
+                </div>
+                <div class="gradient-card gradient-success">
+                    <h4>Success Gradient</h4>
+                </div>
+                <div class="gradient-card gradient-dark">
+                    <h4>Dark Gradient</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-hand-pointer"></i>
+                Button Styles
+            </h2>
+            <div class="buttons-grid">
+                <div class="button-showcase">
+                    <p>Primary Button</p>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-check"></i> Action
+                    </button>
+                </div>
+                <div class="button-showcase">
+                    <p>Secondary Button</p>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </button>
+                </div>
+                <div class="button-showcase">
+                    <p>Success Button</p>
+                    <button class="btn btn-success">
+                        <i class="fas fa-check-circle"></i> Confirm
+                    </button>
+                </div>
+                <div class="button-showcase">
+                    <p>Outline Button</p>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-arrow-right"></i> Next
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-layer-group"></i>
+                Card Components
+            </h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h3>Premium Shopping</h3>
+                    <p>Experience seamless shopping with our advanced virtual try-on technology and personalized recommendations.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Virtual Try-On</h3>
+                    <p>See how items look on you before purchasing using our AI-powered augmented reality experience.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Fast Delivery</h3>
+                    <p>Get your orders delivered quickly with our optimized logistics and multiple shipping options.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shadows Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-expand"></i>
+                Shadow Depths
+            </h2>
+            <div class="shadows-grid">
+                <div class="shadow-box shadow-sm">Small Shadow</div>
+                <div class="shadow-box shadow-md">Medium Shadow</div>
+                <div class="shadow-box shadow-lg">Large Shadow</div>
+                <div class="shadow-box shadow-xl">Extra Large Shadow</div>
+                <div class="shadow-box shadow-colorful">Colorful Shadow</div>
+                <div class="shadow-box shadow-warm">Warm Shadow</div>
+            </div>
+        </div>
+
+        <!-- Animations Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-film"></i>
+                Animation Effects
+            </h2>
+            <div class="animation-demo">
+                <div class="animated-element pulse">
+                    <span>Pulse</span>
+                </div>
+                <div class="animated-element bounce">
+                    <span>Bounce</span>
+                </div>
+                <div class="animated-element slide">
+                    <span>Slide</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-font"></i>
+                Typography Scale
+            </h2>
+            <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <h1 style="font-size: 42px; font-weight: 700; margin-bottom: 20px; color: #0f172a;">Heading 1 (42px)</h1>
+                <h2 style="font-size: 32px; font-weight: 700; margin-bottom: 15px; color: #1e293b;">Heading 2 (32px)</h2>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 15px; color: #334155;">Heading 3 (24px)</h3>
+                <h4 style="font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #475569;">Heading 4 (20px)</h4>
+                <p style="font-size: 16px; line-height: 1.8; color: #64748b; margin-bottom: 15px;">Body text (16px) - This is the standard paragraph size for body copy. It has a line-height of 1.8 for comfortable reading.</p>
+                <small style="font-size: 14px; color: #94a3b8;">Small text (14px) - Used for secondary information and captions</small>
+            </div>
+        </div>
+
+        <!-- Features Comparison -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                Key Design Features
+            </h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>Vibrant Colors</h3>
+                    <p>7 carefully selected colors with gradients for modern, eye-catching design.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Fully Responsive</h3>
+                    <p>Optimized layouts for desktop, tablet, and mobile devices.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Smooth Animations</h3>
+                    <p>Performance-optimized transitions and effects for fluid interactions.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-universal-access"></i>
+                    </div>
+                    <h3>Accessibility First</h3>
+                    <p>WCAG AA compliant with proper contrast ratios and semantic HTML.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Performance</h3>
+                    <p>Optimized CSS with CSS variables for faster loading and rendering.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3>Modular System</h3>
+                    <p>Reusable components and classes for consistent design everywhere.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>🎨 Virtual Trial Room Design System</p>
+        <p>Created with modern CSS3, vibrant colors, and smooth animations</p>
+        <p>
+            <a href="/">Back to Shop</a> | 
+            <a href="/checkout-modern">Checkout Preview</a> | 
+            <a href="/features">Features</a>
+        </p>
+    </footer>
+</body>
+</html>

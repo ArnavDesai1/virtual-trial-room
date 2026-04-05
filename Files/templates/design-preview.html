@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Modern Design Component Preview</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/modern-design.css">
+	<style>
+		body {
+			background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+			padding: 2rem;
+		}
+		.preview-container {
+			max-width: 1200px;
+			margin: 0 auto;
+			background: white;
+			border-radius: 1rem;
+			padding: 2rem;
+			box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+		}
+		.section {
+			margin-bottom: 3rem;
+			padding-bottom: 2rem;
+			border-bottom: 2px solid var(--gray-200);
+		}
+		.section:last-child {
+			border-bottom: none;
+		}
+		h1 {
+			color: var(--dark);
+			font-size: 2.5rem;
+			margin-bottom: 1rem;
+			background: linear-gradient(135deg, var(--primary), var(--secondary));
+			background-clip: text;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+		h2 {
+			color: var(--dark);
+			font-size: 1.75rem;
+			margin-bottom: 1.5rem;
+			margin-top: 2rem;
+		}
+		.demo-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 1rem;
+			margin-bottom: 1.5rem;
+		}
+		.demo-item {
+			padding: 1rem;
+			background: var(--gray-100);
+			border-radius: 0.75rem;
+			text-align: center;
+		}
+		code {
+			background: var(--gray-200);
+			padding: 0.25rem 0.5rem;
+			border-radius: 0.25rem;
+			font-family: 'Courier New', monospace;
+			font-size: 0.9rem;
+		}
+		.color-swatch {
+			width: 100%;
+			height: 80px;
+			border-radius: 0.5rem;
+			margin-bottom: 0.5rem;
+			box-shadow: var(--shadow-md);
+		}
+		.color-label {
+			font-weight: 600;
+			font-size: 0.85rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="preview-container">
+		<h1>🎨 Modern Design System Preview</h1>
+		<p style="color: var(--gray-500); font-size: 1.1rem;">Complete component library for Virtual Trial Room</p>
+
+		<!-- Colors Section -->
+		<section class="section">
+			<h2>Color Palette</h2>
+			<div class="demo-grid">
+				<div class="demo-item">
+					<div class="color-swatch" style="background: #6366f1;"></div>
+					<div class="color-label">Primary</div>
+					<code>#6366f1</code>
+				</div>
+				<div class="demo-item">
+					<div class="color-swatch" style="background: #4f46e5;"></div>
+					<div class="color-label">Primary Dark</div>
+					<code>#4f46e5</code>
+				</div>
+				<div class="demo-item">
+					<div class="color-swatch" style="background: #ec4899;"></div>
+					<div class="color-label">Secondary</div>
+					<code>#ec4899</code>
+				</div>
+				<div class="demo-item">
+					<div class="color-swatch" style="background: #f59e0b;"></div>
+					<div class="color-label">Accent</div>
+					<code>#f59e0b</code>
+				</div>
+				<div class="demo-item">
+					<div class="color-swatch" style="background: #10b981;"></div>
+					<div class="color-label">Success</div>
+					<code>#10b981</code>
+				</div>
+				<div class="demo-item">
+					<div class="color-swatch" style="background: #ef4444;"></div>
+					<div class="color-label">Danger</div>
+					<code>#ef4444</code>
+				</div>
+			</div>
+		</section>
+
+		<!-- Buttons Section -->
+		<section class="section">
+			<h2>Buttons</h2>
+			<div class="demo-grid">
+				<div class="demo-item">
+					<button class="btn-modern btn-primary">Primary Button</button>
+				</div>
+				<div class="demo-item">
+					<button class="btn-modern btn-secondary">Secondary Button</button>
+				</div>
+				<div class="demo-item">
+					<button class="btn-modern btn-accent">Accent Button</button>
+				</div>
+			</div>
+			<p style="color: var(--gray-500); margin-top: 1rem;">
+				<strong>Usage:</strong> <code>&lt;button class="btn-modern btn-primary"&gt;Text&lt;/button&gt;</code>
+			</p>
+		</section>
+
+		<!-- Feature Cards Section -->
+		<section class="section">
+			<h2>Feature Cards</h2>
+			<div class="demo-grid">
+				<div class="feature-card">
+					<div class="feature-icon">
+						<i class="fa fa-camera"></i>
+					</div>
+					<h3>Camera</h3>
+					<p>Virtual try-on technology</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-icon">
+						<i class="fa fa-cube"></i>
+					</div>
+					<h3>3D Preview</h3>
+					<p>360° product visualization</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-icon">
+						<i class="fa fa-shield"></i>
+					</div>
+					<h3>Secure</h3>
+					<p>Safe shopping experience</p>
+				</div>
+				<div class="feature-card">
+					<div class="feature-icon">
+						<i class="fa fa-truck"></i>
+					</div>
+					<h3>Fast Delivery</h3>
+					<p>Quick shipping options</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Product Cards Section -->
+		<section class="section">
+			<h2>Product Cards</h2>
+			<div class="demo-grid">
+				<div class="block2">
+					<div class="block2-pic" style="background: linear-gradient(135deg, #6366f1, #3b82f6); height: 200px; display: flex; align-items: center; justify-content: center;">
+						<i class="fa fa-shopping-bag" style="font-size: 3rem; color: white; opacity: 0.5;"></i>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Premium T-Shirt</div>
+						<div class="block2-price">₹999</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">Add Cart</button>
+							<button class="btn btn-secondary-modern"><i class="fa fa-heart"></i></button>
+						</div>
+					</div>
+				</div>
+				<div class="block2">
+					<div class="block2-pic" style="background: linear-gradient(135deg, #ec4899, #f472b6); height: 200px; display: flex; align-items: center; justify-content: center;">
+						<i class="fa fa-dress" style="font-size: 3rem; color: white; opacity: 0.5;"></i>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Elegant Dress</div>
+						<div class="block2-price">₹1,499</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">Add Cart</button>
+							<button class="btn btn-secondary-modern"><i class="fa fa-heart"></i></button>
+						</div>
+					</div>
+				</div>
+				<div class="block2">
+					<div class="block2-pic" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); height: 200px; display: flex; align-items: center; justify-content: center;">
+						<i class="fa fa-diamond" style="font-size: 3rem; color: white; opacity: 0.5;"></i>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Accessories</div>
+						<div class="block2-price">₹299</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">Add Cart</button>
+							<button class="btn btn-secondary-modern"><i class="fa fa-heart"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Typography Section -->
+		<section class="section">
+			<h2>Typography</h2>
+			<div style="background: var(--gray-100); padding: 1.5rem; border-radius: 0.75rem;">
+				<h3 style="font-size: 2rem; margin-top: 0;">Heading 3 (2rem)</h3>
+				<h4 style="font-size: 1.5rem;">Heading 4 (1.5rem)</h4>
+				<p style="font-size: 1rem;">Body text (1rem) - This is regular paragraph text with comfortable line height.</p>
+				<p style="font-size: 0.95rem; color: var(--gray-500);">Small text (0.95rem) - Used for descriptions and secondary information.</p>
+				<p style="font-size: 0.85rem; color: var(--gray-500);">Extra small text (0.85rem) - Used for labels and hints.</p>
+			</div>
+		</section>
+
+		<!-- Shadows Section -->
+		<section class="section">
+			<h2>Shadows</h2>
+			<div class="demo-grid">
+				<div class="demo-item" style="box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">
+					<strong>Shadow-sm</strong>
+				</div>
+				<div class="demo-item" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+					<strong>Shadow-md</strong>
+				</div>
+				<div class="demo-item" style="box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
+					<strong>Shadow-lg</strong>
+				</div>
+				<div class="demo-item" style="box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);">
+					<strong>Shadow-xl</strong>
+				</div>
+			</div>
+		</section>
+
+		<!-- Responsive Grid Section -->
+		<section class="section">
+			<h2>Responsive Grids</h2>
+			<p style="color: var(--gray-500); margin-bottom: 1rem;">
+				Automatically adapts to screen size:
+			</p>
+			<ul style="color: var(--gray-500); line-height: 1.8;">
+				<li><strong>Desktop:</strong> Multiple columns with full spacing</li>
+				<li><strong>Tablet (768px):</strong> 2-3 columns with adjusted gaps</li>
+				<li><strong>Mobile (480px):</strong> 1-2 columns with compact spacing</li>
+				<li><strong>Small Mobile:</strong> Single column layout</li>
+			</ul>
+		</section>
+
+		<!-- Files Section -->
+		<section class="section">
+			<h2>📁 Files Created</h2>
+			<ul style="color: var(--gray-500); line-height: 2;">
+				<li><strong>modern-design.css</strong> - Complete design system (500+ lines)</li>
+				<li><strong>index-modern.html</strong> - Modern homepage</li>
+				<li><strong>product-modern.html</strong> - Modern product listing</li>
+				<li><strong>features-modern.html</strong> - Modern features page</li>
+				<li><strong>MODERN_DESIGN_GUIDE.md</strong> - Detailed documentation</li>
+				<li><strong>MODERN_DESIGN_SUMMARY.txt</strong> - Quick reference</li>
+			</ul>
+		</section>
+
+		<!-- Quick Start Section -->
+		<section class="section">
+			<h2>🚀 Quick Start</h2>
+			<ol style="color: var(--gray-500); line-height: 2;">
+				<li>Link <code>modern-design.css</code> in your HTML templates</li>
+				<li>Use any of the new HTML templates or adapt existing ones</li>
+				<li>Customize colors by editing CSS variables in <code>:root</code></li>
+				<li>Test on mobile and desktop devices</li>
+				<li>No JavaScript changes needed - it all works together!</li>
+			</ol>
+		</section>
+
+		<!-- Footer -->
+		<footer style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--gray-200); color: var(--gray-500);">
+			<p>Virtual Trial Room - Modern Design System v1.0</p>
+			<p style="font-size: 0.9rem;">Made with ❤️ for a cooler frontend experience</p>
+		</footer>
+	</div>
+</body>
+</html>

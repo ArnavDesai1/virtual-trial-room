@@ -1,0 +1,18 @@
+# Virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Binary / compiled files
+*.pyd
+*.dll
+
+# Large ML models
+*.dat
+
+# OS files
+.DS_Store
+Thumbs.db

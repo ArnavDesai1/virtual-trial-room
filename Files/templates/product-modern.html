@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Shop - Virtual Trial Room</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<link rel="icon" type="image/png" href="static/images/icons/Try-Buy.png">
+	
+	<!-- Core Styles -->
+	<link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/util.css">
+	
+	<!-- Modern Design CSS -->
+	<link rel="stylesheet" type="text/css" href="static/css/modern-design.css">
+
+	<style>
+		.page-header {
+			background: linear-gradient(135deg, #6366f1, #3b82f6);
+			color: white;
+			padding: 3rem 0;
+			margin-top: 84px;
+			text-align: center;
+		}
+
+		.page-header h1 {
+			font-size: 2.5rem;
+			font-weight: 800;
+			margin-bottom: 0.5rem;
+		}
+
+		.filter-section {
+			background: var(--white);
+			padding: 1.5rem;
+			border-radius: 1rem;
+			margin-bottom: 2rem;
+			box-shadow: var(--shadow-md);
+		}
+
+		.filter-btn {
+			padding: 0.75rem 1.25rem;
+			border: 2px solid var(--gray-300);
+			background: var(--white);
+			border-radius: 0.75rem;
+			cursor: pointer;
+			transition: var(--transition);
+			font-weight: 600;
+			font-size: 0.9rem;
+			margin-right: 0.5rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.filter-btn:hover,
+		.filter-btn.active {
+			background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+			color: var(--white);
+			border-color: var(--primary);
+		}
+
+		.isotope-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+			gap: 1.5rem;
+		}
+
+		.product-wrapper {
+			display: flex;
+			flex-direction: column;
+		}
+
+		@media (max-width: 768px) {
+			.page-header h1 {
+				font-size: 1.75rem;
+			}
+
+			.isotope-grid {
+				grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			}
+		}
+	</style>
+</head>
+<body class="animsition">
+
+	<!-- Modern Header -->
+	<header>
+		<div class="container-menu-desktop">
+			<div class="wrap-menu-desktop">
+				<nav class="limiter-menu-desktop container">
+					<a href="http://127.0.0.1:5000/index" class="logo">
+						<img src="static/images/icons/Try-Buy.png" alt="Virtual Trial Room">
+					</a>
+
+					<div class="menu-desktop">
+						<ul class="main-menu">
+							<li>
+								<a href="http://127.0.0.1:5000/index">Home</a>
+							</li>
+							<li>
+								<a href="http://127.0.0.1:5000/product">Shop</a>
+							</li>
+							<li>
+								<a href="http://127.0.0.1:5000/features">Features</a>
+							</li>
+						</ul>
+					</div>	
+
+					<div class="wrap-icon-header flex-w flex-r-m m-r-15">
+						<input type="button" id="check_out" class="btn-modern btn-primary" value="Try & Checkout">
+					</div>
+				</nav>
+			</div>	
+		</div>
+
+		<div class="wrap-header-mobile">
+			<div class="logo-mobile">
+				<a href="http://127.0.0.1:5000/index"><img src="static/images/icons/Try-Buy.png" alt="Logo"></a>
+			</div>
+			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+				<span class="hamburger-box"><span class="hamburger-inner"></span></span>
+			</div>
+		</div>
+
+		<div class="menu-mobile">
+			<ul class="main-menu-m">
+				<li><a href="http://127.0.0.1:5000/index">Home</a></li>
+				<li><a href="http://127.0.0.1:5000/product">Shop</a></li>
+				<li><a href="http://127.0.0.1:5000/features">Features</a></li>
+			</ul>
+		</div>
+	</header>
+
+	<!-- Page Header -->
+	<div class="page-header">
+		<h1>Our Collection</h1>
+		<p>Discover our premium selection and try them virtually</p>
+	</div>
+
+	<!-- Products Section -->
+	<div class="section-products container">
+		
+		<!-- Filter Section -->
+		<div class="filter-section">
+			<h3 style="font-weight: 700; margin-bottom: 1rem;">Filter by Category</h3>
+			<button class="filter-btn active" data-filter="*">
+				<i class="fa fa-th-large"></i> All Products
+			</button>
+			<button class="filter-btn" data-filter=".women">
+				<i class="fa fa-female"></i> Women
+			</button>
+			<button class="filter-btn" data-filter=".men">
+				<i class="fa fa-male"></i> Men
+			</button>
+			<button class="filter-btn" data-filter=".accessories">
+				<i class="fa fa-diamond"></i> Accessories
+			</button>
+		</div>
+
+		<!-- Products Grid -->
+		<div class="isotope-grid">
+			
+			<!-- Product 1 -->
+			<div class="product-wrapper men">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/t-shirts/modal-1.png" alt="White T-Shirt">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">White T-Shirt</div>
+						<div class="block2-price">₹235.64</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Product 2 -->
+			<div class="product-wrapper women">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/t-shirts/modal-2.png" alt="Pink T-Shirt">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Pink T-Shirt for Women</div>
+						<div class="block2-price">₹125.31</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Product 3 -->
+			<div class="product-wrapper men">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/t-shirts/modal-3.png" alt="Red T-Shirt">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Red T-Shirt for Men</div>
+						<div class="block2-price">₹125.50</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Product 4 -->
+			<div class="product-wrapper women">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/t-shirts/modal-4.png" alt="Purple T-Shirt">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Purple T-Shirt for Women</div>
+						<div class="block2-price">₹175.00</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Product 5 -->
+			<div class="product-wrapper men">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/t-shirts/modal-5.png" alt="Orange T-Shirt">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Orange T-Shirt for Men</div>
+						<div class="block2-price">₹134.75</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Product 6 -->
+			<div class="product-wrapper women">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/t-shirts/modal-6.png" alt="Golden One Piece">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Golden One Piece Dress</div>
+						<div class="block2-price">₹2193.20</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Product 7 -->
+			<div class="product-wrapper women">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/model-7-only-t-shirt.jpg" alt="Sport T-Shirt">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Light Pink Sport T-Shirt</div>
+						<div class="block2-price">₹252.66</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Product 8 -->
+			<div class="product-wrapper women">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img src="static/images/Tops4/15.png" alt="Grey T-Shirt">
+						<div class="block2-pic-overlay">
+							<button class="btn-modern btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+								<i class="fa fa-eye m-r-10"></i> Quick View
+							</button>
+						</div>
+					</div>
+					<div class="block2-txt">
+						<div class="block2-name">Grey T-Shirt</div>
+						<div class="block2-price">₹418.96</div>
+						<div class="block2-btn">
+							<button class="btn btn-primary-modern">
+								<i class="fa fa-shopping-bag"></i> Add Cart
+							</button>
+							<button class="btn btn-secondary-modern">
+								<i class="fa fa-heart"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- CTA Section -->
+	<section style="background: linear-gradient(135deg, #6366f1, #3b82f6); color: white; padding: 4rem 0; margin: 4rem 0; text-align: center;">
+		<div class="container">
+			<h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Try Before You Buy!</h2>
+			<p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">Use our virtual try-on feature to see how products look on you.</p>
+			<button id="check_out" class="btn-modern" style="background: white; color: #6366f1; font-weight: 700;">
+				<i class="fa fa-camera m-r-10"></i> Start Virtual Fitting
+			</button>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+				<div>
+					<h3>About Us</h3>
+					<p>Virtual Trial Room revolutionizes online shopping with cutting-edge AR and AI technology.</p>
+				</div>
+				<div>
+					<h3>Quick Links</h3>
+					<ul>
+						<li><a href="http://127.0.0.1:5000/index">Home</a></li>
+						<li><a href="http://127.0.0.1:5000/product">Shop</a></li>
+						<li><a href="http://127.0.0.1:5000/features">Features</a></li>
+					</ul>
+				</div>
+				<div>
+					<h3>Support</h3>
+					<ul>
+						<li><a href="#">Contact Us</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+						<li><a href="#">Terms & Conditions</a></li>
+					</ul>
+				</div>
+				<div>
+					<h3>Follow Us</h3>
+					<ul>
+						<li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+						<li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+						<li><a href="#"><i class="fa fa-instagram"></i> Instagram</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; 2024 Virtual Trial Room. All rights reserved. | Made with ❤️ for fashion lovers</p>
+			</div>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="static/vendor/bootstrap/js/popper.js"></script>
+	<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script>
+		// Filter functionality
+		document.querySelectorAll('.filter-btn').forEach(btn => {
+			btn.addEventListener('click', function() {
+				document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+				this.classList.add('active');
+
+				const filter = this.getAttribute('data-filter');
+				document.querySelectorAll('.product-wrapper').forEach(product => {
+					if (filter === '*' || product.classList.contains(filter.substring(1))) {
+						product.style.display = 'block';
+					} else {
+						product.style.display = 'none';
+					}
+				});
+			});
+		});
+
+		// Checkout button
+		document.getElementById('check_out').addEventListener('click', function() {
+			window.location.href = 'http://127.0.0.1:5000/checkout';
+		});
+	</script>
+</body>
+</html>
