@@ -88,6 +88,24 @@ It is a virtual environment that utilizes the laptop camera to capture the user'
  Pip install imutils
   ```
 
+## 🔥 IMPORTANT: Download Required Face Landmark Model
+
+For proper face detection and landmark recognition, you need to download the `shape_predictor_68_face_landmarks.dat` file:
+
+### Steps:
+1. Download from: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
+2. Extract the `.bz2` file (using 7-Zip, WinRAR, or `bzip2` command)
+3. Place the resulting `.dat` file in the project root directory or in the `Files/` folder
+4. The file should be named: `shape_predictor_68_face_landmarks.dat`
+
+### Why is this needed?
+This pre-trained model is essential for:
+- Detecting facial landmarks (eyes, nose, mouth, face shape)
+- Accurate face detection and alignment
+- Proper clothing overlay positioning on the user's face and body
+
+**⚠️ Note:** This file is ~100MB. Make sure you have sufficient disk space and internet connection to download it.
+
 
 
 
