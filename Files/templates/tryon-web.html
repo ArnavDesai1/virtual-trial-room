@@ -363,8 +363,8 @@
         let frameCount = 0;
         let lastTime = Date.now();
 
-        // Start camera
-        startBtn.addEventListener('click', async () => {
+        // Function to start camera
+        async function startCamera() {
             try {
                 startBtn.disabled = true;
                 stream = await navigator.mediaDevices.getUserMedia({
@@ -382,6 +382,60 @@
                 document.getElementById('errorText').textContent = 'Camera access denied. Please allow camera permission.';
                 showStatus('error', 'Camera access denied. Check browser permissions.');
                 startBtn.disabled = false;
+            }
+        }
+
+        // Start camera on button click
+        startBtn.addEventListener('click', startCamera);
+
+        // Auto-start camera on page load
+        window.addEventListener('load', async () => {
+            console.log('Page loaded, checking for URL parameters...');
+            
+            // Check for clothing image in URL parameter
+            const params = new URLSearchParams(window.location.search);
+            const clothingParam = params.get('clothing');
+            
+            if (clothingParam) {
+                console.log('Clothing parameter found:', clothingParam);
+                // Fetch the image from the server
+                try {
+                    const response = await fetch('/' + clothingParam);
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                clothingPreview.src = event.target.result;
+                                clothingPreview.style.display = 'block';
+                                clothingImagePath = event.target.result;
+                                showStatus('success', '✅ Clothing loaded! Starting camera...');
+                                
+                                // Auto-start the camera
+                                setTimeout(startCamera, 500);
+                            };
+                            img.onerror = () => {
+                                showStatus('error', 'Invalid image file.');
+                                setTimeout(startCamera, 500);
+                            };
+                            img.src = event.target.result;
+                        };
+                        reader.readAsDataURL(blob);
+                    } else {
+                        console.log('Could not load clothing image, starting camera anyway');
+                        showStatus('info', '📷 Starting camera...');
+                        setTimeout(startCamera, 500);
+                    }
+                } catch (err) {
+                    console.error('Error loading clothing:', err);
+                    showStatus('info', '📷 Starting camera...');
+                    setTimeout(startCamera, 500);
+                }
+            } else {
+                console.log('No clothing parameter found');
+                // Just show the initial status
+                showStatus('info', '📷 Ready to start! Click "Start Camera" button.');
             }
         });
 
