@@ -43,10 +43,17 @@
 		// Make globally available
 		window.FirebaseModule = FirebaseModule;
 		window.PaymentUtils = { openPaymentModal };
+		window.createAuthModal = createAuthModal;
 		
 		// Initialize auth modal on page load
 		document.addEventListener('DOMContentLoaded', () => {
-			createAuthModal();
+			try {
+				console.log('Initializing auth modal...');
+				createAuthModal();
+				console.log('Auth modal initialized, window.openAuthModal available:', typeof window.openAuthModal);
+			} catch (err) {
+				console.error('Error initializing auth modal:', err);
+			}
 		});
 	</script>
 </head>
