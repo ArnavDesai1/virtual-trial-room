@@ -35,7 +35,11 @@
 	<link rel="stylesheet" type="text/css" href="static/css/main.css">
 <!--===============================================================================================-->
 	<script type="module">
-		// Import Firebase, Payment modules, and Auth Modal
+		// ============================================
+		// SINGLE CONSOLIDATED INITIALIZATION
+		// ============================================
+		
+		// Import all modules
 		import * as FirebaseModule from '/static/js/firebase-integration.js';
 		import { createPaymentModal, initPaymentModal, openPaymentModal } from '/static/js/payment-modal.js';
 		import { createAuthModal } from '/static/js/auth-modal-professional.js';
@@ -43,18 +47,148 @@
 		// Make globally available
 		window.FirebaseModule = FirebaseModule;
 		window.PaymentUtils = { openPaymentModal };
-		window.createAuthModal = createAuthModal;
 		
-		// Initialize auth modal on page load
-		document.addEventListener('DOMContentLoaded', () => {
-			try {
-				console.log('Initializing auth modal...');
-				createAuthModal();
-				console.log('Auth modal initialized, window.openAuthModal available:', typeof window.openAuthModal);
-			} catch (err) {
-				console.error('Error initializing auth modal:', err);
+		// Create auth modal FIRST (this sets up window.openAuthModal)
+		console.log('[APP] Creating auth modal...');
+		createAuthModal();
+		console.log('[APP] Auth modal created, window.openAuthModal:', typeof window.openAuthModal);
+		
+		// Create payment modal
+		console.log('[APP] Creating payment modal...');
+		createPaymentModal();
+		initPaymentModal(FirebaseModule);
+		
+		// Set up auth UI
+		function setupAuthUI() {
+			const user = FirebaseModule.getCurrentUser();
+			const container = document.getElementById('auth-container');
+			
+			if (!container) {
+				console.warn('[APP] Auth container not found');
+				return;
 			}
+			
+			if (user) {
+				// Show avatar
+				const initials = (user.displayName || user.email || 'U').substring(0, 2).toUpperCase();
+				container.innerHTML = `
+					<div style="position: relative;">
+						<button id="user-avatar" style="
+							width: 45px;
+							height: 45px;
+							border-radius: 50%;
+							background: linear-gradient(135deg, #6366f1, #ec4899);
+							color: white;
+							border: none;
+							font-weight: bold;
+							cursor: pointer;
+							font-size: 16px;
+							transition: transform 0.2s;
+						" title="Click for menu">${initials}</button>
+						
+						<div id="user-dropdown" style="
+							display: none;
+							position: absolute;
+							top: 55px;
+							right: 0;
+							background: white;
+							border-radius: 12px;
+							box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+							min-width: 220px;
+							z-index: 10000;
+							overflow: hidden;
+						">
+							<div style="padding: 16px; border-bottom: 1px solid #e2e8f0; background: #f8f9fa;">
+								<p style="margin: 0; font-weight: 600; color: #1e293b; font-size: 0.95rem;">${user.displayName || 'User'}</p>
+								<p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #64748b;">${user.email}</p>
+							</div>
+							<button id="logout-btn" style="
+								width: 100%;
+								padding: 12px 16px;
+								border: none;
+								background: none;
+								color: #ef4444;
+								cursor: pointer;
+								text-align: left;
+								font-weight: 500;
+								font-size: 0.9rem;
+								transition: background 0.2s;
+							">🚪 Logout</button>
+						</div>
+					</div>
+				`;
+				
+				setTimeout(() => {
+					const btn = document.getElementById('user-avatar');
+					const dropdown = document.getElementById('user-dropdown');
+					if (btn) {
+						btn.addEventListener('click', (e) => {
+							e.stopPropagation();
+							dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+						});
+					}
+					
+					document.addEventListener('click', (e) => {
+						if (dropdown && btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+							dropdown.style.display = 'none';
+						}
+					});
+					
+					if (document.getElementById('logout-btn')) {
+						document.getElementById('logout-btn').addEventListener('click', async () => {
+							await FirebaseModule.logout();
+							window.location.reload();
+						});
+					}
+				}, 0);
+				
+			} else {
+				// Show login button
+				container.innerHTML = `
+					<button id="login-btn" style="
+						padding: 10px 20px;
+						background: linear-gradient(135deg, #6366f1, #ec4899);
+						color: white;
+						border: none;
+						border-radius: 8px;
+						cursor: pointer;
+						font-weight: 600;
+						font-size: 0.9rem;
+						transition: all 0.2s;
+					">🔐 Login</button>
+				`;
+				
+				setTimeout(() => {
+					const btn = document.getElementById('login-btn');
+					if (btn) {
+						console.log('[APP] Login button found, adding click listener. window.openAuthModal:', typeof window.openAuthModal);
+						btn.addEventListener('click', () => {
+							console.log('[APP] Login button clicked!');
+							if (window.openAuthModal) {
+								window.openAuthModal('login');
+							} else {
+								console.error('[APP] window.openAuthModal is not defined!');
+							}
+						});
+					} else {
+						console.warn('[APP] Login button element not found');
+					}
+				}, 0);
+			}
+		}
+		
+		// Listen to auth state and update UI
+		console.log('[APP] Setting up auth state listener...');
+		FirebaseModule.onAuthStateChange((user) => {
+			console.log('[APP] Auth state changed:', user ? user.email : 'logged out');
+			setupAuthUI();
 		});
+		
+		// Initial UI update
+		console.log('[APP] Running initial auth UI setup...');
+		setupAuthUI();
+		
+		console.log('[APP] Initialization complete!');
 	</script>
 </head>
 <body class="animsition">
@@ -103,141 +237,6 @@
 			
 			<!-- Payment Modal Container -->
 			<div id="payment-modal-container"></div>
-			
-			<script type="module">
-				// Import Firebase and Payment modules
-				import * as FirebaseModule from '/static/js/firebase-integration.js';
-				import { createPaymentModal, initPaymentModal } from '/static/js/payment-modal.js';
-				
-				// Make globally available
-				window.FirebaseModule = FirebaseModule;
-				
-				// Initialize payment modal
-				createPaymentModal();
-				initPaymentModal(FirebaseModule);
-				
-				// Update auth UI (login button or avatar)
-				function updateAuthUI() {
-					const user = FirebaseModule.getCurrentUser();
-					const container = document.getElementById('auth-container');
-					
-					if (!container) {
-						console.warn('Auth container not found');
-						return;
-					}
-					
-					if (user) {
-						// Show avatar
-						const initials = (user.displayName || user.email || 'U').substring(0, 2).toUpperCase();
-						container.innerHTML = `
-							<div style="position: relative;">
-								<button id="user-avatar" style="
-									width: 45px;
-									height: 45px;
-									border-radius: 50%;
-									background: linear-gradient(135deg, #6366f1, #ec4899);
-									color: white;
-									border: none;
-									font-weight: bold;
-									cursor: pointer;
-									font-size: 16px;
-									transition: transform 0.2s;
-								" title="Click for menu">${initials}</button>
-								
-								<div id="user-dropdown" style="
-									display: none;
-									position: absolute;
-									top: 55px;
-									right: 0;
-									background: white;
-									border-radius: 12px;
-									box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-									min-width: 220px;
-									z-index: 10000;
-									overflow: hidden;
-								">
-									<div style="padding: 16px; border-bottom: 1px solid #e2e8f0; background: #f8f9fa;">
-										<p style="margin: 0; font-weight: 600; color: #1e293b; font-size: 0.95rem;">${user.displayName || 'User'}</p>
-										<p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #64748b;">${user.email}</p>
-									</div>
-									<button id="logout-btn" style="
-										width: 100%;
-										padding: 12px 16px;
-										border: none;
-										background: none;
-										color: #ef4444;
-										cursor: pointer;
-										text-align: left;
-										font-weight: 500;
-										font-size: 0.9rem;
-										transition: background 0.2s;
-									">🚪 Logout</button>
-								</div>
-							</div>
-						`;
-						
-						// Avatar click - Show account menu
-						setTimeout(() => {
-							const btn = document.getElementById('user-avatar');
-							const dropdown = document.getElementById('user-dropdown');
-							if (btn) {
-								btn.addEventListener('click', (e) => {
-									e.stopPropagation();
-									dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-								});
-							}
-							
-							// Close dropdown when clicking outside
-							document.addEventListener('click', (e) => {
-								if (dropdown && btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
-									dropdown.style.display = 'none';
-								}
-							});
-							
-							// Logout button
-							if (document.getElementById('logout-btn')) {
-								document.getElementById('logout-btn').addEventListener('click', async () => {
-									await FirebaseModule.logout();
-									window.location.reload();
-								});
-							}
-						}, 0);
-						
-					} else {
-						// Show login button
-						container.innerHTML = `
-							<button id="login-btn" style="
-								padding: 10px 20px;
-								background: linear-gradient(135deg, #6366f1, #ec4899);
-								color: white;
-								border: none;
-								border-radius: 8px;
-								cursor: pointer;
-								font-weight: 600;
-								font-size: 0.9rem;
-								transition: all 0.2s;
-							">🔐 Login</button>
-						`;
-						
-						setTimeout(() => {
-							const btn = document.getElementById('login-btn');
-							if (btn) {
-								btn.addEventListener('click', () => window.openAuthModal('login'));
-							}
-						}, 0);
-					}
-				}
-				
-				// Listen to auth state changes and update UI
-				FirebaseModule.onAuthStateChange((user) => {
-					console.log('Auth state changed:', user ? user.email : 'logged out');
-					updateAuthUI();
-				});
-				
-				// Initial UI update
-				console.log('Initializing auth UI on home page');
-				updateAuthUI();
-			</script>					
 				</nav>
 			</div>	
 		</div>
