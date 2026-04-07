@@ -2409,13 +2409,14 @@
 		
 		function tryOnItem(product) {
 			console.log('Trying on item:', product);
-			// Redirect to web-based try-on with clothing image as parameter
-			const encodedImage = encodeURIComponent(product);
-			const url = '/tryon-web?clothing=' + encodedImage;
-			console.log('Opening web try-on:', url);
+			// Remove 'static/images/' prefix and keep the rest as is
+			const cleanPath = product.replace('static/images/', '');
+			console.log('Clean path:', cleanPath);
+			const finalUrl = '/tryon/' + cleanPath;
+			console.log('Final URL:', finalUrl);
 			
-			// Open in new window or same window
-			window.location.href = url;
+			// Open in new window to prevent page refresh
+			window.open(finalUrl, '_blank');
 		}
 		
 		function checkOut(){

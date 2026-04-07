@@ -1,6 +1,6 @@
 
 
-from flask import Flask, render_template, Response,redirect,request, jsonify
+from flask import Flask, render_template, Response,redirect,request, jsonify, url_for
 import os
 import sys
 import subprocess
@@ -48,33 +48,11 @@ def tryon(file_path):
     if not os.path.exists(full_path):
         return f"Error: Clothing image not found: {full_path}", 404
     
-    # Use proper overlay version - SUPERIMPOSED clothing on your body
-    try:
-        py_exec = os.path.join(script_dir, '..', '.venv', 'Scripts', 'python.exe')
-        if not os.path.exists(py_exec):
-            py_exec = sys.executable or 'python'
-
-        tryon_script = os.path.join(script_dir, 'tryOn_stable.py')
-        if not os.path.exists(tryon_script):
-            return f"Error: Try-on launcher not found: {tryon_script}", 500
-        
-        print("Launching Proper Overlay Virtual Trial Room...")
-        print(f"Python executable: {py_exec}")
-        print(f"Try-on script: {tryon_script}")
-        print(f"Clothing image: {full_path}")
-        
-        # Launch from the Files directory so relative imports and logs work reliably.
-        subprocess.Popen(
-            [py_exec, tryon_script, full_path],
-            cwd=script_dir,
-            creationflags=subprocess.CREATE_NEW_CONSOLE if os.name == 'nt' else 0
-        )
-        
-    except Exception as e:
-        print(f"Error launching proper overlay version: {e}")
-        return f"Error launching virtual try-on: {e}", 500
-
-    return "Virtual try-on started. Check the application window.", 200
+    # Construct clothing path relative to static folder
+    clothing_path = f"static/images/{file_path}"
+    
+    # Redirect to web-based try-on with the clothing image as parameter
+    return redirect(url_for('tryon_web') + f'?clothing={clothing_path}')
 
 @app.route('/tryall',methods = ['POST', 'GET'])
 def tryall():
