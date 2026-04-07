@@ -1,11 +1,16 @@
 
 
 from flask import Flask, render_template, Response,redirect,request, jsonify
-from .camera import VideoCamera
 import os
 import sys
 import subprocess
 from dotenv import load_dotenv
+
+# Try relative import first (for gunicorn), fallback to absolute (for local)
+try:
+    from .camera import VideoCamera
+except ImportError:
+    from camera import VideoCamera
 
 # Load environment variables from .env file
 load_dotenv()
