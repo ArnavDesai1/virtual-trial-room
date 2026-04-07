@@ -31,19 +31,42 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCfaeh8cB_vkL17FLd9qIAYXQywLBAHkqM",
-    authDomain: "virtual-trial-room-3cff3.firebaseapp.com",
-    projectId: "virtual-trial-room-3cff3",
-    storageBucket: "virtual-trial-room-3cff3.firebasestorage.app",
-    messagingSenderId: "678744292818",
-    appId: "1:678744292818:web:a31747dd608d86b21f1c0b",
-    measurementId: "G-10TCLDZE4X"
-};
+// Fetch Firebase config from backend (secure - key not exposed in frontend)
+let app, auth, db;
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+async function initializeFirebase() {
+    try {
+        const response = await fetch('/api/firebase-config');
+        if (!response.ok) throw new Error('Failed to fetch Firebase config');
+        const firebaseConfig = await response.json();
+        
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        
+        console.log('Firebase initialized successfully');
+        return { app, auth, db };
+    } catch (error) {
+        console.error('Firebase initialization failed:', error);
+        // Fallback config (for demo purposes)
+        const firebaseConfig = {
+            apiKey: "",
+            authDomain: "virtual-trial-room-3cff3.firebaseapp.com",
+            projectId: "virtual-trial-room-3cff3",
+            storageBucket: "virtual-trial-room-3cff3.firebasestorage.app",
+            messagingSenderId: "678744292818",
+            appId: "1:678744292818:web:a31747dd608d86b21f1c0b",
+            measurementId: "G-10TCLDZE4X"
+        };
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        return { app, auth, db };
+    }
+}
+
+// Initialize Firebase
+await initializeFirebase();
 
 // ============================================================================
 // 2. GLOBAL AUTH STATE

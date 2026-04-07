@@ -1,10 +1,15 @@
 
 
-from flask import Flask, render_template, Response,redirect,request
+from flask import Flask, render_template, Response,redirect,request, jsonify
 from camera import VideoCamera
 import os
 import sys
 import subprocess
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 app = Flask(__name__)
 
 CART=[]
@@ -112,6 +117,20 @@ def cart(file_path):
 def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/api/firebase-config')
+def firebase_config():
+    """Serve Firebase config from environment variables (not exposed in frontend)"""
+    config = {
+        "apiKey": os.environ.get("FIREBASE_API_KEY", ""),
+        "authDomain": os.environ.get("FIREBASE_AUTH_DOMAIN", "virtual-trial-room-3cff3.firebaseapp.com"),
+        "projectId": os.environ.get("FIREBASE_PROJECT_ID", "virtual-trial-room-3cff3"),
+        "storageBucket": os.environ.get("FIREBASE_STORAGE_BUCKET", "virtual-trial-room-3cff3.firebasestorage.app"),
+        "messagingSenderId": os.environ.get("FIREBASE_MESSAGING_SENDER_ID", "678744292818"),
+        "appId": os.environ.get("FIREBASE_APP_ID", "1:678744292818:web:a31747dd608d86b21f1c0b"),
+        "measurementId": os.environ.get("FIREBASE_MEASUREMENT_ID", "G-10TCLDZE4X")
+    }
+    return jsonify(config)
 
 if __name__ == '__main__':
     # Get PORT from environment variable or use 5000 for local development
