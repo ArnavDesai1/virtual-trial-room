@@ -26,6 +26,8 @@ function createAuthModal() {
             transform: translate(-50%, -50%);
             width: 95%;
             max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
             background: white;
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
