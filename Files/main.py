@@ -126,7 +126,7 @@ def tryon_web():
 
 @app.route('/api/tryon-process', methods=['POST'])
 def tryon_process():
-    """Process video frame with clothing overlay"""
+    """Process video frame with clothing overlay using face detection"""
     try:
         data = request.get_json()
         if not data or 'frame' not in data:
@@ -151,36 +151,81 @@ def tryon_process():
         if clothing is None:
             return jsonify({'error': 'Invalid clothing image'}), 400
         
-        # Simple overlay processing (can be enhanced with pose detection)
-        # For now, just overlay the clothing image at center
-        frame_h, frame_w = frame.shape[:2]
-        clothing_h, clothing_w = clothing.shape[:2]
-        
-        # Resize clothing to fit frame proportionally
-        # Make it about 1/3 of frame height
-        target_h = frame_h // 3
-        scale = target_h / clothing_h
-        new_w = int(clothing_w * scale)
-        new_h = int(clothing_h * scale)
-        
-        resized_clothing = cv2.resize(clothing, (new_w, new_h))
-        
-        # Position at center-top of frame
-        x = (frame_w - new_w) // 2
-        y = frame_h // 4
-        
-        # Handle alpha channel if exists
-        if resized_clothing.shape[2] == 4:
-            # Has alpha channel
-            alpha = resized_clothing[:, :, 3] / 255.0
-            for c in range(3):
-                frame[y:y+new_h, x:x+new_w, c] = (
-                    frame[y:y+new_h, x:x+new_w, c] * (1 - alpha) +
-                    resized_clothing[:, :, c] * alpha
-                )
-        else:
-            # No alpha, direct overlay
-            frame[y:y+new_h, x:x+new_w] = resized_clothing[:, :, :3]
+        # Detect face for proper clothing positioning
+        try:
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+            faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+            
+            if len(faces) > 0:
+                # Use first detected face
+                x, y, w, h = faces[0]
+                
+                # Calculate body dimensions based on face size
+                # Body width = 3x face width, body height = 4.5x face height
+                body_width = int(w * 3.0)
+                body_height = int(h * 4.5)
+                
+                # Position clothing centered on face, slightly above
+                start_x = max(0, int(x + w/2 - body_width/2))
+                start_y = max(0, int(y - h * 0.2))
+                end_x = min(frame.shape[1], start_x + body_width)
+                end_y = min(frame.shape[0], start_y + body_height)
+                
+                resize_w = end_x - start_x
+                resize_h = end_y - start_y
+                
+                if resize_w > 0 and resize_h > 0:
+                    # Resize clothing to fit calculated body area
+                    resized_clothing = cv2.resize(clothing, (resize_w, resize_h))
+                    
+                    # Apply with alpha blending if available
+                    if resized_clothing.shape[2] == 4:
+                        alpha = resized_clothing[:, :, 3] / 255.0
+                        alpha_3d = np.stack([alpha, alpha, alpha], axis=2)
+                        
+                        try:
+                            bg = frame[start_y:end_y, start_x:end_x].astype(float)
+                            fg = resized_clothing[:, :, :3].astype(float)
+                            blended = (1 - alpha_3d) * bg + alpha_3d * fg
+                            frame[start_y:end_y, start_x:end_x] = blended.astype(np.uint8)
+                        except Exception as e:
+                            print(f"Alpha blending error: {e}")
+                    else:
+                        try:
+                            frame[start_y:end_y, start_x:end_x] = resized_clothing[:, :, :3]
+                        except Exception as e:
+                            print(f"Overlay error: {e}")
+            else:
+                # No face detected, fallback to center positioning
+                frame_h, frame_w = frame.shape[:2]
+                clothing_h, clothing_w = clothing.shape[:2]
+                
+                target_h = frame_h // 3
+                scale = target_h / clothing_h if clothing_h > 0 else 1
+                new_w = int(clothing_w * scale)
+                new_h = int(clothing_h * scale)
+                
+                resized_clothing = cv2.resize(clothing, (new_w, new_h))
+                
+                x = (frame_w - new_w) // 2
+                y = frame_h // 4
+                
+                if resized_clothing.shape[2] == 4:
+                    alpha = resized_clothing[:, :, 3] / 255.0
+                    alpha_3d = np.stack([alpha, alpha, alpha], axis=2)
+                    try:
+                        frame[y:y+new_h, x:x+new_w] = ((1 - alpha_3d) * frame[y:y+new_h, x:x+new_w] + alpha_3d * resized_clothing[:, :, :3]).astype(np.uint8)
+                    except:
+                        pass
+                else:
+                    try:
+                        frame[y:y+new_h, x:x+new_w] = resized_clothing[:, :, :3]
+                    except:
+                        pass
+                        
+        except Exception as e:
+            print(f"Face detection error: {e}")
         
         # Encode result to base64
         _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 70])
