@@ -297,8 +297,8 @@
             </div>
 
             <!-- Right: Clothing Selection -->
-            <div class="section">
-                <h2>Select Clothing</h2>
+            <div class="section" id="clothingSection">
+                <h2 id="clothingHeading">Select Clothing</h2>
 
                 <div class="clothing-file" id="clothingFile">
                     <div style="font-size: 2rem;">👕</div>
@@ -313,7 +313,7 @@
                     <strong>📝 Steps:</strong>
                     <ol style="margin-top: 8px; margin-left: 20px;">
                         <li>Click "Start Camera" - Allow browser to access your camera</li>
-                        <li>Select a clothing image using the file picker</li>
+                        <li>Select a clothing image using the file picker (or clothing will auto-load if selected from product)</li>
                         <li>See the try-on result in real-time!</li>
                     </ol>
                 </div>
@@ -355,6 +355,8 @@
         const errorPlaceholder = document.getElementById('errorPlaceholder');
         const fpsCounter = document.getElementById('fps');
         const processingTimeDisplay = document.getElementById('processingTime');
+        const clothingSection = document.getElementById('clothingSection');
+        const clothingHeading = document.getElementById('clothingHeading');
 
         // State
         let stream = null;
@@ -410,6 +412,11 @@
                                 clothingPreview.src = event.target.result;
                                 clothingPreview.style.display = 'block';
                                 clothingImagePath = event.target.result;
+                                
+                                // Hide the file picker when clothing is pre-loaded
+                                clothingFile.style.display = 'none';
+                                clothingHeading.textContent = '👕 Clothing Loaded';
+                                
                                 showStatus('success', '✅ Clothing loaded! Starting camera...');
                                 
                                 // Auto-start the camera
