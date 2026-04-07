@@ -5,6 +5,10 @@ import os
 import sys
 import subprocess
 from dotenv import load_dotenv
+import cv2
+import numpy as np
+import base64
+from io import BytesIO
 
 # Try relative import first (for gunicorn), fallback to absolute (for local)
 try:
@@ -136,6 +140,79 @@ def firebase_config():
         "measurementId": os.environ.get("FIREBASE_MEASUREMENT_ID", "G-10TCLDZE4X")
     }
     return jsonify(config)
+
+@app.route('/tryon-web')
+def tryon_web():
+    """Web-based try-on with live camera feed"""
+    return render_template('tryon-web.html')
+
+@app.route('/api/tryon-process', methods=['POST'])
+def tryon_process():
+    """Process video frame with clothing overlay"""
+    try:
+        data = request.get_json()
+        if not data or 'frame' not in data:
+            return jsonify({'error': 'Missing frame data'}), 400
+        
+        # Decode frame from base64
+        frame_data = data['frame'].split(',')[1] if ',' in data['frame'] else data['frame']
+        img_array = np.frombuffer(base64.b64decode(frame_data), np.uint8)
+        frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+        
+        if frame is None:
+            return jsonify({'error': 'Invalid frame data'}), 400
+        
+        # Decode clothing image
+        clothing_data = data.get('clothing', '')
+        if clothing_data.startswith('data:'):
+            clothing_data = clothing_data.split(',')[1]
+        
+        clothing_array = np.frombuffer(base64.b64decode(clothing_data), np.uint8)
+        clothing = cv2.imdecode(clothing_array, cv2.IMREAD_UNCHANGED)
+        
+        if clothing is None:
+            return jsonify({'error': 'Invalid clothing image'}), 400
+        
+        # Simple overlay processing (can be enhanced with pose detection)
+        # For now, just overlay the clothing image at center
+        frame_h, frame_w = frame.shape[:2]
+        clothing_h, clothing_w = clothing.shape[:2]
+        
+        # Resize clothing to fit frame proportionally
+        # Make it about 1/3 of frame height
+        target_h = frame_h // 3
+        scale = target_h / clothing_h
+        new_w = int(clothing_w * scale)
+        new_h = int(clothing_h * scale)
+        
+        resized_clothing = cv2.resize(clothing, (new_w, new_h))
+        
+        # Position at center-top of frame
+        x = (frame_w - new_w) // 2
+        y = frame_h // 4
+        
+        # Handle alpha channel if exists
+        if resized_clothing.shape[2] == 4:
+            # Has alpha channel
+            alpha = resized_clothing[:, :, 3] / 255.0
+            for c in range(3):
+                frame[y:y+new_h, x:x+new_w, c] = (
+                    frame[y:y+new_h, x:x+new_w, c] * (1 - alpha) +
+                    resized_clothing[:, :, c] * alpha
+                )
+        else:
+            # No alpha, direct overlay
+            frame[y:y+new_h, x:x+new_w] = resized_clothing[:, :, :3]
+        
+        # Encode result to base64
+        _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 70])
+        encoded = base64.b64encode(buffer).decode('utf-8')
+        
+        return jsonify({'processed_frame': encoded})
+    
+    except Exception as e:
+        print(f'Try-on processing error: {str(e)}')
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     # Get PORT from environment variable or use 5000 for local development

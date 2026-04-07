@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Try-On - Web Camera</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Camera Section */
+        .camera-container {
+            background: #f5f5f5;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #cameraFeed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        #canvasOutput {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .spinner {
+            border: 4px solid rgba(102, 126, 234, 0.1);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* Clothing Selection */
+        .clothing-file {
+            padding: 15px;
+            background: #f9f9f9;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .clothing-file:hover {
+            background: #f0f0ff;
+            border-color: #764ba2;
+        }
+
+        .clothing-file input {
+            display: none;
+        }
+
+        .clothing-preview {
+            width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+            display: none;
+        }
+
+        /* Status */
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status.info {
+            background: #e3f2fd;
+            color: #1976d2;
+            border-left: 4px solid #1976d2;
+        }
+
+        .status.success {
+            background: #e8f5e9;
+            color: #388e3c;
+            border-left: 4px solid #388e3c;
+        }
+
+        .status.error {
+            background: #ffebee;
+            color: #d32f2f;
+            border-left: 4px solid #d32f2f;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: #333;
+            font-weight: 700;
+        }
+
+        .error-placeholder {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎥 Virtual Try-On</h1>
+            <p>See how clothes look on you in real-time!</p>
+        </div>
+
+        <div class="content">
+            <!-- Left: Camera -->
+            <div class="section">
+                <h2>Your Camera</h2>
+                <div class="camera-container">
+                    <video id="cameraFeed" autoplay playsinline muted></video>
+                    <canvas id="canvasOutput"></canvas>
+                    <div class="error-placeholder" id="errorPlaceholder">
+                        <div class="error-icon">❌</div>
+                        <p id="errorText">Camera not available</p>
+                    </div>
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn-primary" id="startBtn">Start Camera</button>
+                    <button class="btn-secondary" id="stopBtn" disabled>Stop Camera</button>
+                    <button class="btn-secondary" id="captureBtn" disabled>📸 Capture</button>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-label">FPS:</span>
+                        <span class="stat-value" id="fps">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Processing:</span>
+                        <span class="stat-value" id="processingTime">0ms</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Clothing Selection -->
+            <div class="section">
+                <h2>Select Clothing</h2>
+
+                <div class="clothing-file" id="clothingFile">
+                    <div style="font-size: 2rem;">👕</div>
+                    <p style="margin-top: 10px; font-weight: 500;">Click to select clothing image</p>
+                    <p style="font-size: 0.9rem; color: #999;">PNG, JPG up to 5MB</p>
+                    <input type="file" id="clothingInput" accept="image/*">
+                </div>
+
+                <img id="clothingPreview" class="clothing-preview" alt="Selected clothing">
+
+                <div class="status info" id="statusInfo">
+                    <strong>📝 Steps:</strong>
+                    <ol style="margin-top: 8px; margin-left: 20px;">
+                        <li>Click "Start Camera" - Allow browser to access your camera</li>
+                        <li>Select a clothing image using the file picker</li>
+                        <li>See the try-on result in real-time!</li>
+                    </ol>
+                </div>
+
+                <div class="status success" id="statusSuccess" style="display: none;">
+                    ✅ <strong id="successMsg"></strong>
+                </div>
+
+                <div class="status error" id="statusError" style="display: none;">
+                    ❌ <strong id="errorMsg"></strong>
+                </div>
+
+                <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; font-size: 0.9rem; color: #666; line-height: 1.6;">
+                    <strong>💡 Tips:</strong>
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li>Use clear, well-lit clothing images</li>
+                        <li>Stand in good lighting for best results</li>
+                        <li>Wear fitting clothes to match properly</li>
+                        <li>Processing happens automatically</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const cameraFeed = document.getElementById('cameraFeed');
+        const canvasOutput = document.getElementById('canvasOutput');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const clothingFile = document.getElementById('clothingFile');
+        const clothingInput = document.getElementById('clothingInput');
+        const clothingPreview = document.getElementById('clothingPreview');
+        const statusInfo = document.getElementById('statusInfo');
+        const statusSuccess = document.getElementById('statusSuccess');
+        const statusError = document.getElementById('statusError');
+        const errorPlaceholder = document.getElementById('errorPlaceholder');
+        const fpsCounter = document.getElementById('fps');
+        const processingTimeDisplay = document.getElementById('processingTime');
+
+        // State
+        let stream = null;
+        let isProcessing = false;
+        let clothingImagePath = null;
+        let frameCount = 0;
+        let lastTime = Date.now();
+
+        // Start camera
+        startBtn.addEventListener('click', async () => {
+            try {
+                startBtn.disabled = true;
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }
+                });
+                cameraFeed.srcObject = stream;
+                stopBtn.disabled = false;
+                captureBtn.disabled = false;
+                errorPlaceholder.style.display = 'none';
+                showStatus('info', '✅ Camera started! Now select clothing to try on.');
+                startProcessing();
+            } catch (err) {
+                console.error('Camera error:', err);
+                errorPlaceholder.style.display = 'flex';
+                document.getElementById('errorText').textContent = 'Camera access denied. Please allow camera permission.';
+                showStatus('error', 'Camera access denied. Check browser permissions.');
+                startBtn.disabled = false;
+            }
+        });
+
+        // Stop camera
+        stopBtn.addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                cameraFeed.srcObject = null;
+            }
+            stopBtn.disabled = true;
+            startBtn.disabled = false;
+            captureBtn.disabled = true;
+            isProcessing = false;
+        });
+
+        // Select clothing
+        clothingFile.addEventListener('click', () => clothingInput.click());
+        clothingInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        clothingPreview.src = event.target.result;
+                        clothingPreview.style.display = 'block';
+                        clothingImagePath = event.target.result;
+                        showStatus('success', 'Clothing image loaded! Processing will start automatically.');
+                    };
+                    img.onerror = () => showStatus('error', 'Invalid image file.');
+                    img.src = event.target.result;
+                };
+                reader.onerror = () => showStatus('error', 'Failed to read file.');
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Process frames
+        function startProcessing() {
+            if (!stream) return;
+
+            const processFrame = async () => {
+                if (!isProcessing && clothingImagePath) {
+                    isProcessing = true;
+                    const startTime = performance.now();
+
+                    try {
+                        // Create canvas from video frame
+                        const canvas = document.createElement('canvas');
+                        canvas.width = cameraFeed.videoWidth;
+                        canvas.height = cameraFeed.videoHeight;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(cameraFeed, 0, 0);
+                        const frameData = canvas.toDataURL('image/jpeg', 0.7);
+
+                        // Send to backend for processing
+                        const response = await fetch('/api/tryon-process', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                frame: frameData,
+                                clothing: clothingImagePath
+                            })
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.processed_frame) {
+                                // Display processed frame
+                                const img = new Image();
+                                img.onload = () => {
+                                    canvasOutput.width = img.width;
+                                    canvasOutput.height = img.height;
+                                    const ctxOut = canvasOutput.getContext('2d');
+                                    ctxOut.drawImage(img, 0, 0);
+                                    canvasOutput.style.display = 'block';
+                                    cameraFeed.style.display = 'none';
+                                };
+                                img.src = 'data:image/jpeg;base64,' + result.processed_frame;
+
+                                // Update processing time
+                                const processingTime = Math.round(performance.now() - startTime);
+                                processingTimeDisplay.textContent = processingTime + 'ms';
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Processing error:', err);
+                    }
+
+                    isProcessing = false;
+                    frameCount++;
+                    updateFPS();
+                }
+
+                requestAnimationFrame(processFrame);
+            };
+
+            processFrame();
+        }
+
+        // FPS Counter
+        function updateFPS() {
+            const now = Date.now();
+            if (now - lastTime >= 1000) {
+                fpsCounter.textContent = frameCount;
+                frameCount = 0;
+                lastTime = now;
+            }
+        }
+
+        // Show status messages
+        function showStatus(type, message) {
+            statusInfo.style.display = 'none';
+            statusSuccess.style.display = 'none';
+            statusError.style.display = 'none';
+
+            if (type === 'info') {
+                statusInfo.innerHTML = message;
+                statusInfo.style.display = 'block';
+            } else if (type === 'success') {
+                document.getElementById('successMsg').textContent = message;
+                statusSuccess.style.display = 'block';
+            } else if (type === 'error') {
+                document.getElementById('errorMsg').textContent = message;
+                statusError.style.display = 'block';
+            }
+        }
+
+        // Check for camera permission on load
+        window.addEventListener('load', () => {
+            navigator.permissions.query({ name: 'camera' }).then(result => {
+                if (result.state === 'denied') {
+                    showStatus('error', 'Camera permission denied in browser settings.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
