@@ -1,7 +1,7 @@
 
 
 from flask import Flask, render_template, Response,redirect,request, jsonify
-from camera import VideoCamera
+from .camera import VideoCamera
 import os
 import sys
 import subprocess
